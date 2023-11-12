@@ -7,12 +7,14 @@ import {
   Put,
   Query,
   Req,
+  Res,
   UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { Response } from 'express'; // Import Response from 'express'
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 import { CollectionService } from './collection.service';
 import { CollectionDto } from './dto';
@@ -57,11 +59,6 @@ export class CollectionController {
     );
   }
 
-  @Post('getCollection')
-  async getCollection(): Promise<ICollection[]> {
-    return await this.collectionService.get();
-  }
-
   @UseGuards(JwtAuthGuard)
   @Put('update/:collectionId')
   async updateCollection(
@@ -77,7 +74,6 @@ export class CollectionController {
     );
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get()
   async getAllCollections(
     @Query('page') page = 1,
@@ -127,4 +123,13 @@ export class CollectionController {
   //     parsedEndDate,
   //   );
   // }
+
+  @Get(':imageName')
+  async getImage(
+    @Param('imageName') imageName: string,
+    @Res() res: Response,
+  ): Promise<void> {
+    const imagePath = this.collectionService.getImagePath(imageName); // Implement a method to get the image path
+    res.sendFile(await imagePath);
+  }
 }

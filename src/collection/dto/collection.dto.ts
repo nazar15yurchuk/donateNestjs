@@ -22,7 +22,7 @@ export class CollectionDto {
   @IsString()
   // @IsNotEmpty()
   @IsOptional()
-  @Min(0, { message: 'Sum must be at least 0.' })
+  // @Min(0, { message: 'Sum must be at least 0.' })
   sum?: string;
 
   // @IsString()

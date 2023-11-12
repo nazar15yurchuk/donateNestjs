@@ -9,7 +9,7 @@ export const CollectionSchema = new mongoose.Schema(
     status: { type: String, required: true, default: EStatus.pending },
     link: { type: String, required: true },
     description: { type: String, required: true },
-    sum: { type: String, required: false, min: 0 },
+    sum: { type: String, required: false },
     amountOfViews: { type: Number, required: true, default: 0 },
     image: { type: String, required: false },
   },

@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
+import { join } from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ManagersModule } from './managers';
 import { AuthModule } from './auth/auth.module';
-// import { AdminsModule } from './admins/admins.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { CollectionModule } from './collection/collection.module';
 
 import * as dotenv from 'dotenv';
@@ -18,7 +19,10 @@ dotenv.config();
     ManagersModule,
     AuthModule,
     CollectionModule,
-    // AdminsModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'donateImages'), // Adjust the path based on your project structure
+      serveRoot: '/images',
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

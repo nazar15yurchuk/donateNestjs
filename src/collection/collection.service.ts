@@ -6,6 +6,7 @@ import { CollectionDto, UpdateCollectionDto } from './dto';
 import { ERole, EStatus } from '../common/enums';
 import * as mongoose from 'mongoose';
 import { log } from 'util';
+import { join } from 'path';
 
 @Injectable()
 export class CollectionService {
@@ -35,8 +36,9 @@ export class CollectionService {
     }
   }
 
-  async get(): Promise<ICollection[]>{
-    return this.collectionModel.find();
+  async getImagePath(imageName: string): Promise<string> {
+    const imagesDirectory = join(__dirname, '..', 'donateImages'); // Adjust the path based on your project structure
+    return join(imagesDirectory, imageName);
   }
 
   async updateCollection(
