@@ -21,7 +21,7 @@ dotenv.config();
     AuthModule,
     CollectionModule,
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'donateImages'), // Adjust the path based on your project structure
+      rootPath: join(__dirname, '..', 'donateImages'),
       serveRoot: '/images',
     }),
   ],

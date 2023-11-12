@@ -10,9 +10,9 @@ export class ImagesController {
     @Res() res: Response,
   ): void {
     const imagePath = join(__dirname, '..', '..', 'donateImages', imageName);
-    console.log(imagePath);
     try {
       res.sendFile(imagePath);
+      res.json(imagePath);
     } catch (error) {
       res.status(404).send('Image not found');
     }

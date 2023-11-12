@@ -4,11 +4,7 @@ import { Model, Types } from 'mongoose';
 import { ICollection, IManager } from '../interfaces';
 import { CollectionDto, UpdateCollectionDto } from './dto';
 import { ERole, EStatus } from '../common/enums';
-import * as mongoose from 'mongoose';
-import { log } from 'util';
-import { join } from 'path';
-import { UpdateCollectionByManagerDto } from './dto/updateCollectionByManager.dto';
-import { contains } from 'class-validator';
+import { UpdateCollectionByManagerDto } from './dto';
 
 @Injectable()
 export class CollectionService {
@@ -38,11 +34,6 @@ export class CollectionService {
     }
   }
 
-  async getImagePath(imageName: string): Promise<string> {
-    const imagesDirectory = join(__dirname, '..', 'donateImages'); // Adjust the path based on your project structure
-    return join(imagesDirectory, imageName);
-  }
-
   async updateCollection(
     user: IManager,
     body: UpdateCollectionDto,
@@ -70,8 +61,7 @@ export class CollectionService {
   ) {
     if (user.role === ERole.manager) {
       await this.collectionModel.updateOne({ _id: collectionId }, { ...body });
-
-      return 'Update successfully';
+      return this.collectionModel.findOne({ _id: collectionId });
     } else {
       throw new HttpException(
         { message: 'You are not manager' },
@@ -105,7 +95,7 @@ export class CollectionService {
     }
   }
 
-  async getCollectionById(collectionId: any): Promise<ICollection> {
+  async getCollectionById(collectionId: string): Promise<ICollection> {
     const collection = await this.collectionModel.findOne({
       _id: collectionId,
     });
@@ -130,40 +120,7 @@ export class CollectionService {
     }
   }
 
-  // async getMyCollections(user: IManager): Promise<ICollection[]> {
-  //   // return this.collectionModel.find({
-  //   //   _manager_id: new mongoose.Types.ObjectId(user._id),
-  //   // });
-  //   const managerObjectId = new mongoose.Types.ObjectId(user._id as string);
-  //
-  //   try {
-  //     return await this.collectionModel.find({ _manager_id: managerObjectId });
-  //   } catch (error) {
-  //     console.error('Error during query:', error);
-  //     throw error; // You might want to handle or log the error appropriately
-  //   }
-  // }
-
-  // async getFilteredCollections(): Promise<ICollection[]> {
-  //   return await this.collectionModel
-  //     .find({
-  //       status: { $in: ['rejected', 'published'] }, // Use $in to match multiple values
-  //     })
-  //     .exec();
-  // }
-
   async filteredStatus(status: EStatus): Promise<ICollection[]> {
     return this.collectionModel.find({ status: status });
   }
-
-  // async filteredDate(startDate: string, endDate: string): Promise<ICollection[]> {
-  //   return this.collectionModel
-  //     .find({
-  //       createdAt: {
-  //         $gte: startDate,
-  //         $lte: endDate,
-  //       },
-  //     })
-  //     .exec();
-  // }
 }

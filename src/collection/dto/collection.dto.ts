@@ -1,10 +1,4 @@
-import {
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  Min,
-} from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CollectionDto {
   @IsString()
@@ -20,6 +14,7 @@ export class CollectionDto {
   description: string;
 
   @IsString()
+  // @IsNumber()
   // @IsNotEmpty()
   @IsOptional()
   // @Min(0, { message: 'Sum must be at least 0.' })

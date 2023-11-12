@@ -7,14 +7,12 @@ import {
   Put,
   Query,
   Req,
-  Res,
   UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { diskStorage } from 'multer';
-import { extname, join } from 'path';
-import { Response } from 'express';
+import { extname } from 'path';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 import { CollectionService } from './collection.service';
 import { CollectionDto } from './dto';
@@ -23,7 +21,7 @@ import { ICollection } from '../interfaces';
 import { JwtAuthGuard } from '../auth/auth.guards';
 import { UpdateCollectionDto } from './dto';
 import { EStatus } from '../common/enums';
-import { UpdateCollectionByManagerDto } from './dto/updateCollectionByManager.dto';
+import { UpdateCollectionByManagerDto } from './dto';
 
 @Controller('collection')
 export class CollectionController {
@@ -128,38 +126,10 @@ export class CollectionController {
     return this.collectionService.searchCollections(title);
   }
 
-  // @UseGuards(JwtAuthGuard)
-  // @Get('myCollections')
-  // async getMyCollections(@Req() req: IRequest): Promise<ICollection[]> {
-  //   const users = req.user;
-  //   console.log(users);
-  //   return await this.collectionService.getMyCollections(users);
-  // }
-
-  // @UseGuards(JwtAuthGuard)
-  // @Get('filtered')
-  // async getFilteredCollections(): Promise<ICollection[]> {
-  //   return this.collectionService.getFilteredCollections();
-  // }
-
   @Get('filtered/:status')
   async filteredStatus(
     @Param('status') status: EStatus,
   ): Promise<ICollection[]> {
     return await this.collectionService.filteredStatus(status);
   }
-
-  // @Get('filteredByDate')
-  // async filteredDate(
-  //   @Query('startDate') startDate: string,
-  //   @Query('endDate') endDate: string,
-  // ): Promise<ICollection[]> {
-  //   const parsedStartDate = new Date(startDate).toISOString().split('T')[0];
-  //   const parsedEndDate = new Date(endDate).toISOString().split('T')[0];
-  //   return await this.collectionService.filteredDate(
-  //     parsedStartDate,
-  //     parsedEndDate,
-  //   );
-  // }
-
 }

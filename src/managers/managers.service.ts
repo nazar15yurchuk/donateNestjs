@@ -37,25 +37,6 @@ export class ManagersService {
     });
   }
 
-  // async getAllManagers(
-  //   user: IManager,
-  //   page: number,
-  //   limit: number,
-  // ): Promise<IManager[]> {
-  //   if (user.role === ERole.admin) {
-  //     const startIndex = (page - 1) * limit;
-  //     const endIndex = page * limit;
-  //
-  //     return this.managerModel.find().slice(String(startIndex), endIndex);
-  //
-  //     // return this.managerModel.find();
-  //   } else {
-  //     throw new HttpException(
-  //       'You don`t have permissions',
-  //       HttpStatus.BAD_REQUEST,
-  //     );
-  //   }
-  // }
   async getAllManagers(
     user: IManager,
     page: number,

@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsOptional, IsString} from 'class-validator';
 
 export class UpdateCollectionByManagerDto {
   @IsString()
@@ -15,11 +15,11 @@ export class UpdateCollectionByManagerDto {
 
   @IsString()
   // @IsNotEmpty()
+  // @IsNumber()
   @IsOptional()
   // @Min(0, { message: 'Sum must be at least 0.' })
   sum?: string;
 
-  // @IsString()
   @IsOptional()
   image?: Express.Multer.File;
 }
