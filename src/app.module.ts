@@ -7,6 +7,7 @@ import { ManagersModule } from './managers';
 import { AuthModule } from './auth/auth.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { CollectionModule } from './collection/collection.module';
+import { ImagesController } from './images/images.controller';
 
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -24,7 +25,7 @@ dotenv.config();
       serveRoot: '/images',
     }),
   ],
-  controllers: [AppController],
+  controllers: [AppController, ImagesController],
   providers: [AppService],
 })
 export class AppModule {}

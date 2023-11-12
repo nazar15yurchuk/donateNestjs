@@ -8,6 +8,7 @@ import * as mongoose from 'mongoose';
 import { log } from 'util';
 import { join } from 'path';
 import { UpdateCollectionByManagerDto } from './dto/updateCollectionByManager.dto';
+import { contains } from 'class-validator';
 
 @Injectable()
 export class CollectionService {
@@ -104,7 +105,7 @@ export class CollectionService {
     }
   }
 
-  async getCollectionById(collectionId: string): Promise<ICollection> {
+  async getCollectionById(collectionId: any): Promise<ICollection> {
     const collection = await this.collectionModel.findOne({
       _id: collectionId,
     });
@@ -117,18 +118,16 @@ export class CollectionService {
     return this.collectionModel.findOne({ _id: collectionId });
   }
 
-  async searchCollections(query: string): Promise<ICollection[]> {
-    const searchRegex = new RegExp(query, 'i'); // 'i' for case-insensitive
-    return this.collectionModel
-      .find({
-        $and: [
-          { title: { $regex: searchRegex } },
-          { description: { $regex: searchRegex } },
-          { sum: { $regex: searchRegex } },
-          { link: { $regex: searchRegex } },
-        ],
-      })
-      .exec();
+  async searchCollections(search: string): Promise<ICollection[]> {
+    if (/^[0-9a-fA-F]{24}$/.test(search)) {
+      return this.collectionModel
+        .find({
+          title: { $regex: new RegExp(search, 'i') },
+        })
+        .exec();
+    } else {
+      return this.collectionModel.find();
+    }
   }
 
   // async getMyCollections(user: IManager): Promise<ICollection[]> {

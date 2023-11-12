@@ -13,8 +13,8 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { diskStorage } from 'multer';
-import { extname } from 'path';
-import { Response } from 'express'; // Import Response from 'express'
+import { extname, join } from 'path';
+import { Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
 import { CollectionService } from './collection.service';
 import { CollectionDto } from './dto';
@@ -121,11 +121,11 @@ export class CollectionController {
     return await this.collectionService.getCollectionById(collectionId);
   }
 
-  @Get('search/:search')
+  @Get('search/:title')
   async searchCollections(
-    @Param('search') search: string,
+    @Param('title') title: string,
   ): Promise<ICollection[]> {
-    return this.collectionService.searchCollections(search);
+    return this.collectionService.searchCollections(title);
   }
 
   // @UseGuards(JwtAuthGuard)
@@ -162,12 +162,4 @@ export class CollectionController {
   //   );
   // }
 
-  @Get(':imageName')
-  async getImage(
-    @Param('imageName') imageName: string,
-    @Res() res: Response,
-  ): Promise<void> {
-    const imagePath = this.collectionService.getImagePath(imageName); // Implement a method to get the image path
-    res.sendFile(await imagePath);
-  }
 }
