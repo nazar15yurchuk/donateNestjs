@@ -23,6 +23,7 @@ import { ICollection } from '../interfaces';
 import { JwtAuthGuard } from '../auth/auth.guards';
 import { UpdateCollectionDto } from './dto';
 import { EStatus } from '../common/enums';
+import { UpdateCollectionByManagerDto } from './dto/updateCollectionByManager.dto';
 
 @Controller('collection')
 export class CollectionController {
@@ -74,6 +75,21 @@ export class CollectionController {
     );
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Put('updateOne/:collectionId')
+  async updateCollectionByManager(
+    @Req() req: IRequest,
+    @Body() body: UpdateCollectionByManagerDto,
+    @Param('collectionId') collectionId: string,
+  ) {
+    const user = req.user;
+    return await this.collectionService.updateCollectionByManager(
+      user,
+      body,
+      collectionId,
+    );
+  }
+
   @Get()
   async getAllCollections(
     @Query('page') page = 1,
@@ -83,11 +99,33 @@ export class CollectionController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('pending')
+  async getAllPendingCollections(
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+    @Req() req: IRequest,
+  ): Promise<ICollection[]> {
+    const user = req.user;
+    return await this.collectionService.getAllPendingCollections(
+      page,
+      limit,
+      user,
+    );
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get('/:collectionId')
   async getCollectionById(
     @Param('collectionId') collectionId: string,
   ): Promise<ICollection> {
     return await this.collectionService.getCollectionById(collectionId);
+  }
+
+  @Get('search/:search')
+  async searchCollections(
+    @Param('search') search: string,
+  ): Promise<ICollection[]> {
+    return this.collectionService.searchCollections(search);
   }
 
   // @UseGuards(JwtAuthGuard)

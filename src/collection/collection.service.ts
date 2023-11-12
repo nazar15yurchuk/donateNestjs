@@ -7,6 +7,7 @@ import { ERole, EStatus } from '../common/enums';
 import * as mongoose from 'mongoose';
 import { log } from 'util';
 import { join } from 'path';
+import { UpdateCollectionByManagerDto } from './dto/updateCollectionByManager.dto';
 
 @Injectable()
 export class CollectionService {
@@ -61,9 +62,46 @@ export class CollectionService {
     }
   }
 
+  async updateCollectionByManager(
+    user: IManager,
+    body: UpdateCollectionByManagerDto,
+    collectionId: string,
+  ) {
+    if (user.role === ERole.manager) {
+      await this.collectionModel.updateOne({ _id: collectionId }, { ...body });
+
+      return 'Update successfully';
+    } else {
+      throw new HttpException(
+        { message: 'You are not manager' },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
   async getAllCollections(page: number, limit: number): Promise<ICollection[]> {
     const skip = (page - 1) * limit;
-    return this.collectionModel.find().skip(skip).limit(limit).exec();
+    return this.collectionModel
+      .find({ status: EStatus.published })
+      .skip(skip)
+      .limit(limit)
+      .exec();
+  }
+
+  async getAllPendingCollections(page: number, limit: number, user: IManager) {
+    if (user.role === ERole.admin) {
+      const skip = (page - 1) * limit;
+      return await this.collectionModel
+        .find({ status: EStatus.pending })
+        .skip(skip)
+        .limit(limit)
+        .exec();
+    } else {
+      throw new HttpException(
+        { message: 'You are not admin' },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   async getCollectionById(collectionId: string): Promise<ICollection> {
@@ -77,6 +115,20 @@ export class CollectionService {
       { amountOfViews: raiseViews },
     );
     return this.collectionModel.findOne({ _id: collectionId });
+  }
+
+  async searchCollections(query: string): Promise<ICollection[]> {
+    const searchRegex = new RegExp(query, 'i'); // 'i' for case-insensitive
+    return this.collectionModel
+      .find({
+        $and: [
+          { title: { $regex: searchRegex } },
+          { description: { $regex: searchRegex } },
+          { sum: { $regex: searchRegex } },
+          { link: { $regex: searchRegex } },
+        ],
+      })
+      .exec();
   }
 
   // async getMyCollections(user: IManager): Promise<ICollection[]> {
