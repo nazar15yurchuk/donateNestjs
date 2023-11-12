@@ -46,6 +46,8 @@ export class AuthService {
 
   async loginManager(body: LoginManagerDto) {
     const manager = await this.managersService.findEmail(body.email);
+    const role = manager.role;
+
     if (!manager) {
       throw new HttpException(
         'Email or password is incorrect',
@@ -58,7 +60,7 @@ export class AuthService {
       };
       const tokens = await this.signTokens(payload, manager);
 
-      return { tokens };
+      return { tokens, role };
     }
     throw new HttpException(
       'Email or password is incorrect',

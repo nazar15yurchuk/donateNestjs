@@ -5,9 +5,9 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
 import { ManagersModule } from '../managers';
 import { AuthService } from './auth.service';
-import { TokenSchema } from '../schemas/token.schema';
-import { AccessTokenStrategy } from './strategies/accessToken.strategy';
-import { RefreshTokenStrategy } from './strategies/refreshToken.strategy';
+import { TokenSchema } from '../schemas';
+import { AccessTokenStrategy } from './strategies';
+import { RefreshTokenStrategy } from './strategies';
 
 @Module({
   imports: [
