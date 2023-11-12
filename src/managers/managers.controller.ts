@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, Req, UseGuards } from '@nestjs/common';
 import { ManagersService } from './managers.service';
 import { JwtAuthGuard } from '../auth/auth.guards';
 import { IManager, IRequest } from '../interfaces';
@@ -16,5 +16,15 @@ export class ManagersController {
   ): Promise<IManager[]> {
     const user = req.user;
     return await this.managersService.getAllManagers(user, page, limit);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/:managerId')
+  async getManagerById(
+    @Req() req: IRequest,
+    @Param('managerId') managerId: string,
+  ): Promise<IManager> {
+    const user = req.user;
+    return await this.managersService.getManagerById(user, managerId);
   }
 }

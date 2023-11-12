@@ -53,4 +53,15 @@ export class ManagersService {
       );
     }
   }
+
+  async getManagerById(user: IManager, managerId: string): Promise<IManager> {
+    if (user.role === ERole.admin) {
+      return this.managerModel.findOne({ _id: managerId });
+    } else {
+      throw new HttpException(
+        'You don`t have permissions',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
 }
