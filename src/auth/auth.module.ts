@@ -2,12 +2,13 @@ import { Module } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
+
 import { AuthController } from './auth.controller';
-import { ManagersModule } from '../managers';
 import { AuthService } from './auth.service';
 import { TokenSchema } from '../schemas';
 import { AccessTokenStrategy } from './strategies';
 import { RefreshTokenStrategy } from './strategies';
+import { ManagersModule } from '../managers';
 
 @Module({
   imports: [

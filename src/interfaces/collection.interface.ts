@@ -1,4 +1,5 @@
 import { Document } from 'mongoose';
+
 export interface ICollection extends Document {
   _id?: string;
   _manager_id?: string;
@@ -6,7 +7,7 @@ export interface ICollection extends Document {
   status?: string;
   link?: string;
   description?: string;
-  sum?: string;
+  sum?: number;
   amountOfViews?: number;
   image?: Express.Multer.File;
 }

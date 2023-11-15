@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose';
-import { ERole } from '../common/enums';
+
+import { ERole } from '../common';
 
 export const ManagerSchema = new mongoose.Schema(
   {

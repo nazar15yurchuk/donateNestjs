@@ -1,4 +1,5 @@
 import { Document } from 'mongoose';
+
 export interface IManager extends Document {
   _id?: string;
   username?: string;

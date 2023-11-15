@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
+
 import { CollectionService } from './collection.service';
 import { CollectionController } from './collection.controller';
-import { MongooseModule } from '@nestjs/mongoose';
 import { CollectionSchema } from '../schemas';
 
 @Module({

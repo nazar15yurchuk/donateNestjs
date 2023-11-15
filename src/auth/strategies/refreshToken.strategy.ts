@@ -4,7 +4,11 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Request } from 'express';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import * as dotenv from 'dotenv';
+
 import { IToken } from '../../interfaces';
+
+dotenv.config();
 
 @Injectable()
 export class RefreshTokenStrategy extends PassportStrategy(
@@ -16,7 +20,7 @@ export class RefreshTokenStrategy extends PassportStrategy(
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: 'REFRESH_TOKEN',
+      secretOrKey: process.env.REFRESH_TOKEN,
       passReqToCallback: true,
     });
   }

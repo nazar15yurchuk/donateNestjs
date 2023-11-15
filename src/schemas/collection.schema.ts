@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 import { Schema } from 'mongoose';
-import { EStatus } from '../common/enums';
+
+import { EStatus } from '../common';
 
 export const CollectionSchema = new mongoose.Schema(
   {
@@ -9,7 +10,7 @@ export const CollectionSchema = new mongoose.Schema(
     status: { type: String, required: true, default: EStatus.pending },
     link: { type: String, required: true },
     description: { type: String, required: true },
-    sum: { type: String, required: false },
+    sum: { type: Number, required: true, min: [0, 'Sum must be at least 0'] },
     amountOfViews: { type: Number, required: true, default: 0 },
     image: { type: String, required: false },
   },

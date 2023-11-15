@@ -1,10 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+
 import { IManager } from '../interfaces';
-import { RegisterManagerDto } from '../auth/dto';
-import { CommonService } from '../common/common';
-import { ERole } from '../common/enums';
+import { RegisterManagerDto } from '../auth';
+import { CommonService } from '../common';
+import { ERole } from '../common';
 
 @Injectable()
 export class ManagersService {

@@ -1,4 +1,4 @@
-import { IsOptional, IsString} from 'class-validator';
+import { IsNumber, IsOptional, IsString, Min } from 'class-validator';
 
 export class UpdateCollectionByManagerDto {
   @IsString()
@@ -13,11 +13,9 @@ export class UpdateCollectionByManagerDto {
   @IsOptional()
   description?: string;
 
-  @IsString()
-  // @IsNotEmpty()
-  // @IsNumber()
+  @IsNumber()
   @IsOptional()
-  // @Min(0, { message: 'Sum must be at least 0.' })
+  @Min(0, { message: 'Sum must be at least 0.' })
   sum?: string;
 
   @IsOptional()

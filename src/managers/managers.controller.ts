@@ -1,6 +1,7 @@
 import { Controller, Get, Param, Query, Req, UseGuards } from '@nestjs/common';
+
 import { ManagersService } from './managers.service';
-import { JwtAuthGuard } from '../auth/auth.guards';
+import { JwtAuthGuard } from '../auth';
 import { IManager, IRequest } from '../interfaces';
 
 @Controller('managers')

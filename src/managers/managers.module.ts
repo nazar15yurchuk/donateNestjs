@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+
 import { ManagersService } from './managers.service';
 import { ManagersController } from './managers.controller';
 import { ManagerSchema } from '../schemas';
-import { CommonService } from '../common/common';
+import { CommonService } from '../common';
 
 @Module({
   imports: [

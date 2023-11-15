@@ -1,9 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+
 import { ICollection, IManager } from '../interfaces';
 import { CollectionDto, UpdateCollectionDto } from './dto';
-import { ERole, EStatus } from '../common/enums';
+import { ERole, EStatus } from '../common';
 import { UpdateCollectionByManagerDto } from './dto';
 
 @Injectable()

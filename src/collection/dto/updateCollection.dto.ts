@@ -1,5 +1,6 @@
 import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
-import { EStatus } from '../../common/enums';
+
+import { EStatus } from '../../common';
 
 export class UpdateCollectionDto {
   @IsString()

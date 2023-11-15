@@ -14,13 +14,14 @@ import {
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { FileInterceptor } from '@nestjs/platform-express/multer';
+
 import { CollectionService } from './collection.service';
 import { CollectionDto } from './dto';
 import { IRequest } from '../interfaces';
 import { ICollection } from '../interfaces';
-import { JwtAuthGuard } from '../auth/auth.guards';
+import { JwtAuthGuard } from '../auth';
 import { UpdateCollectionDto } from './dto';
-import { EStatus } from '../common/enums';
+import { EStatus } from '../common';
 import { UpdateCollectionByManagerDto } from './dto';
 
 @Controller('collection')

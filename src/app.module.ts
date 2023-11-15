@@ -1,22 +1,21 @@
 import { Module } from '@nestjs/common';
 import { join } from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ServeStaticModule } from '@nestjs/serve-static';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ManagersModule } from './managers';
-import { AuthModule } from './auth/auth.module';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { CollectionModule } from './collection/collection.module';
-import { ImagesController } from './images/images.controller';
+import { AuthModule } from './auth';
+import { CollectionModule } from './collection';
+import { ImagesController } from './images';
 
 import * as dotenv from 'dotenv';
+import { ManagersModule } from './managers';
 dotenv.config();
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://hackathon:1iEZLQ6pEuJqQXRA@cluster0.ppv5oqb.mongodb.net/hackathonIncora?retryWrites=true&w=majority',
-    ),
+    MongooseModule.forRoot(process.env.MONGO_DB),
     ManagersModule,
     AuthModule,
     CollectionModule,
