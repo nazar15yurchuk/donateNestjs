@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query, Req, UseGuards } from '@nestjs/common';
+import {Controller, Get, Param, Query, Req, UseGuards} from '@nestjs/common';
 
 import { ManagersService } from './managers.service';
 import { JwtAuthGuard } from '../auth';
@@ -8,7 +8,7 @@ import { IManager, IRequest } from '../interfaces';
 export class ManagersController {
   constructor(private readonly managersService: ManagersService) {}
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get()
   async getAllManagers(
     @Req() req: IRequest,
@@ -19,7 +19,7 @@ export class ManagersController {
     return await this.managersService.getAllManagers(user, page, limit);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get('/:managerId')
   async getManagerById(
     @Req() req: IRequest,

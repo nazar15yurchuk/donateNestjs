@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { join } from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { ConfigModule } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -15,6 +16,7 @@ dotenv.config();
 
 @Module({
   imports: [
+    // ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.MONGO_DB),
     ManagersModule,
     AuthModule,
