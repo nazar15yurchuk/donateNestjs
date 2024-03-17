@@ -16,7 +16,7 @@ dotenv.config();
 
 @Module({
   imports: [
-    // ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.MONGO_DB),
     ManagersModule,
     AuthModule,
