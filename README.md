@@ -21,19 +21,11 @@ Project is created with:
 * TypeScript
 * REST API
 * ESLint/prettier
-
-## Setup
-
-```bash
-$ npm install
-```
+* Docker
 
 ## Running the app
 
 ```bash
 # development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
+$ docker-compose up --build
 
