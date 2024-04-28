@@ -19,9 +19,9 @@ export class CollectionDto {
   @IsNotEmpty()
   description: string;
 
-  @IsNumber()
+  @IsString()
   @IsNotEmpty()
-  @Min(0, { message: 'Sum must be at least 0.' })
+  // @Min(0, { message: 'Sum must be at least 0.' })
   sum?: string;
 
   @IsOptional()

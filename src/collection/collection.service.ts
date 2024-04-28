@@ -6,6 +6,7 @@ import { ICollection, IManager } from '../interfaces';
 import { CollectionDto, UpdateCollectionDto } from './dto';
 import { ERole, EStatus } from '../common';
 import { UpdateCollectionByManagerDto } from './dto';
+import * as AWS from 'aws-sdk';
 
 @Injectable()
 export class CollectionService {
@@ -14,24 +15,59 @@ export class CollectionService {
     private readonly collectionModel: Model<ICollection>,
   ) {}
 
+  AWS_S3_BUCKET = process.env.AWS_S3_BUCKET;
+  s3 = new AWS.S3({
+    accessKeyId: process.env.ACCESS_KEY_ID,
+    secretAccessKey: process.env.SECRET_ACCESS_KEY,
+  });
+
   async createCollection(
     user: IManager,
     body: CollectionDto,
     _manager_id: Types.ObjectId,
     file: Express.Multer.File,
-  ): Promise<ICollection> {
+  ) {
     if (user.role === ERole.manager) {
       console.log(body);
-      return await this.collectionModel.create({
+      const { originalname } = file;
+
+      await this.collectionModel.create({
         ...body,
+        sum: Number(body.sum),
         _manager_id,
         image: file ? file.filename : undefined,
       });
+      return await this.s3_upload(
+        file.buffer,
+        this.AWS_S3_BUCKET,
+        originalname,
+        file.mimetype,
+      );
     } else {
       throw new HttpException(
         'You don`t have permissions',
         HttpStatus.BAD_REQUEST,
       );
+    }
+  }
+
+  async s3_upload(file, bucket, name, mimetype) {
+    const params = {
+      Bucket: bucket,
+      Key: String(name),
+      Body: file,
+      ACL: process.env.ACL,
+      ContentType: mimetype,
+      ContentDisposition: 'inline',
+      CreateBucketConfiguration: {
+        LocationConstraint: process.env.LOCATION_CONSTRAINT,
+      },
+    };
+
+    try {
+      return (await this.s3.upload(params).promise()).Key;
+    } catch (e) {
+      console.log(e);
     }
   }
 

@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -11,9 +13,10 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
-import { FileInterceptor } from '@nestjs/platform-express/multer';
+// import { diskStorage } from 'multer';
+// import { extname } from 'path';
+// import { FileInterceptor } from '@nestjs/platform-express/multer';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 import { CollectionService } from './collection.service';
 import { CollectionDto } from './dto';
@@ -30,27 +33,34 @@ export class CollectionController {
 
   @UseGuards(JwtAuthGuard)
   @Post('create')
-  @UseInterceptors(
-    FileInterceptor('image', {
-      storage: diskStorage({
-        destination: './donateImages',
-        filename: (req, file, callback) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          return callback(null, `${randomName}${extname(file.originalname)}`);
-        },
-      }),
-    }),
-  )
+  // @UseInterceptors(
+  //   FileInterceptor('image', {
+  //     storage: diskStorage({
+  //       destination: './donateImages',
+  //       filename: (req, file, callback) => {
+  //         const randomName = Array(32)
+  //           .fill(null)
+  //           .map(() => Math.round(Math.random() * 16).toString(16))
+  //           .join('');
+  //         return callback(null, `${randomName}${extname(file.originalname)}`);
+  //       },
+  //     }),
+  //   }),
+  // )
+  @UseInterceptors(FileInterceptor('image'))
   async createCollection(
     @Req() req: any,
     @Body() body: CollectionDto,
     @UploadedFile() file: Express.Multer.File,
-  ): Promise<ICollection> {
+  ) {
     const user = req.user;
     const userId = req.user._id;
+    if (body.sum && Number(body.sum) < 1) {
+      throw new HttpException(
+        { message: 'Sum must be at least 0' },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     return await this.collectionService.createCollection(
       user,
       body,
